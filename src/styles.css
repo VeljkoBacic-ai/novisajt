@@ -1,0 +1,221 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=Oswald:wght@300;500&display=swap');
+
+:root {
+  --gold-primary: #FFB800;
+  --gold-deep: #E8920A;
+  --blue-brand: #1B3A8C;
+  --blue-dark: #0D1F5C;
+  --magenta: #CC0E8A;
+  --teal: #0D8B72;
+  --red-pop: #C41515;
+  --near-black: #111111;
+  --surface-dark: #181818;
+  --surface-card: #1E1E1E;
+  --beige-texture: #D4C4A0;
+  --white-off: #F5F0E8;
+
+  --background: var(--near-black);
+  --foreground: var(--white-off);
+  --border: rgba(255, 184, 0, 0.2);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-gold: var(--gold-primary);
+  --color-gold-deep: var(--gold-deep);
+  --color-blue-brand: var(--blue-brand);
+  --color-blue-dark: var(--blue-dark);
+  --color-magenta: var(--magenta);
+  --color-teal: var(--teal);
+  --color-red-pop: var(--red-pop);
+  --color-near-black: var(--near-black);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-card: var(--surface-card);
+  --color-white-off: var(--white-off);
+  --font-display: "Bebas Neue", sans-serif;
+  --font-label: "Barlow Condensed", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-numeric: "Oswald", sans-serif;
+  --animate-marquee: marquee var(--duration, 40s) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration, 40s) linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap, 1rem))); }
+}
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap, 1rem))); }
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--near-black);
+}
+
+body {
+  background-color: var(--near-black);
+  color: var(--white-off);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Global grain noise overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@layer base {
+  * { border-color: var(--border); }
+}
+
+.font-display { font-family: var(--font-display); letter-spacing: 0.05em; }
+.font-label { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; }
+.font-body { font-family: var(--font-body); }
+.font-numeric { font-family: var(--font-numeric); font-weight: 300; }
+
+/* Diagonal stripe comic texture */
+.tex-stripes {
+  background-image: repeating-linear-gradient(45deg, rgba(255,184,0,0.06) 0 1px, transparent 1px 12px);
+}
+.tex-stripes-blue {
+  background-image: repeating-linear-gradient(45deg, rgba(255,184,0,0.08) 0 1px, transparent 1px 14px);
+}
+
+/* Halftone dots */
+.tex-halftone {
+  background-image: radial-gradient(rgba(255,184,0,0.18) 1px, transparent 1.4px);
+  background-size: 14px 14px;
+}
+
+/* Diagonal section clips */
+.clip-bottom-diag { clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%); }
+.clip-top-diag { clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%); }
+
+/* Cursor */
+@media (pointer: fine) {
+  body { cursor: none; }
+}
+.ds-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 12px; height: 12px;
+  border-radius: 9999px;
+  background: var(--gold-primary);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.18s ease, height 0.18s ease, background 0.18s ease, mix-blend-mode 0.18s ease;
+  mix-blend-mode: difference;
+}
+.ds-cursor.hover {
+  width: 40px; height: 40px;
+  background: rgba(255,184,0,0.5);
+}
+
+/* Gallery image desaturate -> color on hover */
+.gallery-img {
+  filter: grayscale(60%) contrast(1.05);
+  transition: filter 0.45s ease, transform 0.45s ease;
+}
+.gallery-card:hover .gallery-img { filter: grayscale(0%) contrast(1); transform: scale(1.03); }
+
+/* Underline animation for nav links */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -6px;
+  height: 2px; width: 0;
+  background: var(--gold-primary);
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover { color: var(--gold-primary); }
+
+/* DJ banner animated gradient */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.dj-gradient {
+  background: linear-gradient(125deg, rgba(204,14,138,0.7), rgba(13,31,92,0.85), rgba(204,14,138,0.6));
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+/* Floating label inputs */
+.field { position: relative; padding-top: 22px; }
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255,184,0,0.25);
+  color: var(--white-off);
+  padding: 10px 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-bottom-color: var(--gold-primary); }
+.field label {
+  position: absolute;
+  left: 0; top: 28px;
+  color: rgba(245,240,232,0.55);
+  font-family: var(--font-label);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  font-size: 11px;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: top 0.2s ease, color 0.2s ease, font-size 0.2s ease;
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field select:focus + label,
+.field select:valid + label,
+.field textarea:focus + label,
+.field textarea:not(:placeholder-shown) + label { top: 0; color: var(--gold-primary); font-size: 10px; }
+.field.error input,
+.field.error select,
+.field.error textarea { border-bottom-color: var(--red-pop); }
+.field-error { color: var(--red-pop); font-size: 11px; margin-top: 6px; font-family: var(--font-label); }
+.field select option { background: var(--surface-dark); color: var(--white-off); }
+
+/* Scroll-triggered reveals via plain CSS fallback */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  body { cursor: auto; }
+  .ds-cursor { display: none; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--near-black); }
+::-webkit-scrollbar-thumb { background: rgba(255,184,0,0.2); }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-primary); }
