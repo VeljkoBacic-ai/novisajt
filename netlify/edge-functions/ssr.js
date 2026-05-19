@@ -5,5 +5,5 @@ export default async (request, context) => {
 };
 
 export const config = {
-  path: "/*",
+  path: "/__edge-disabled__",
 };
