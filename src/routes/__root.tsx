@@ -7,8 +7,6 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-
-import appCss from "../styles.css?url";
 import { I18nProvider } from "../lib/i18n";
 
 function NotFoundComponent() {
@@ -89,10 +87,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://tag-foto.rs/wp-content/uploads/2024/05/fotografije-sa-eminog-18-tog-rodjendana-27.jpg" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
     ],
   }),
   component: RootComponent,
@@ -118,10 +112,12 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nProvider>
-        <Outlet />
-      </I18nProvider>
-    </QueryClientProvider>
+    <RootShell>
+      <QueryClientProvider client={queryClient}>
+        <I18nProvider>
+          <Outlet />
+        </I18nProvider>
+      </QueryClientProvider>
+    </RootShell>
   );
 }
